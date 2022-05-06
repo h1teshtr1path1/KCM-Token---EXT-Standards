@@ -3,19 +3,6 @@
     "kcmt": {
       "main": "src/kcmt/main.mo",
       "type": "motoko"
-    },
-    "kcmt_assets": {
-      "dependencies": [
-        "kcmt"
-      ],
-      "frontend": {
-        "entrypoint": "src/kcmt_assets/src/index.html"
-      },
-      "source": [
-        "src/kcmt_assets/assets",
-        "dist/kcmt_assets/"
-      ],
-      "type": "assets"
     }
   },
   "defaults": {
