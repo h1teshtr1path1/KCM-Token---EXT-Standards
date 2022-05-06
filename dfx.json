@@ -1,7 +1,7 @@
 {
   "canisters": {
     "kcmt": {
-      "main": "src/kcmt/main.mo",
+      "main": "src/main.mo",
       "type": "motoko"
     }
   },

@@ -1,7 +1,7 @@
 
 import Cycles "mo:base/ExperimentalCycles";
 import Trie "mo:base/Trie";
-import Trie2D "mo:base/Trie2D";
+import Trie2D "mo:base/Trie";
 import Text "mo:base/Text";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
@@ -15,7 +15,7 @@ import Option "mo:base/Option";
 import AID "./accountid";
 import Ext "./ext";
 
-actor KCMT_token = this{
+actor KCMT_token {
     type AccountIdentifier = Ext.AccountIdentifier;
     type SubAccount = Ext.SubAccount;
     type User = Ext.User;
@@ -38,9 +38,9 @@ actor KCMT_token = this{
         owner : AccountIdentifier;
     };
     // type TokenLedger = Trie.Trie<AccountIdentifier, Balance>;
-    private stable var nextTokenID = 0;
-    private stable var containerToken : Trie2D<TokenIndex, AccountIdentifier, Balance> = Trie.empty();
-    private stable var containerMetadata : Trie2D<TokenIndex, Metadata, Balance> = Trie.empty();
+    private stable var nextTokenID : Nat32 = 0;
+    private stable var containerToken : Trie2D.Trie2D<TokenIndex, AccountIdentifier, Balance> = Trie.empty();
+    private stable var containerMetadata : Trie2D.Trie2D<TokenIndex, Metadata, Balance> = Trie.empty();
 
 
     // Create a Trie key from Nat32
@@ -57,14 +57,15 @@ actor KCMT_token = this{
 
     public func registerToken(request : TokenRequest) : async (TokenIndex) {
         var tID : TokenIndex = nextTokenID;
-        containerToken := Trie2D.put2D<TokenIndex, AccountIdentifier, Balance>(containerToken, key(tID), Nat32.equal, keyT(request.owner), Text.equal, request.balance);
-        containerMetadata := Trie2D.put2D<TokenIndex, Metadata, Balance>(containerMetadata, key(tID), Nat32.equal, keyT(Metadata), Text.equal, request.metadata);
+        containerToken := Trie2D.put2D<TokenIndex, AccountIdentifier, Balance>(containerToken, key(tID), Nat32.equal, keyT(request.owner), Text.equal, request.supply);
+        // containerMetadata := Trie2D.put2D<TokenIndex, Metadata, Balance>(containerMetadata, key(tID), Nat32.equal, keyT(request.metadata), Text.equal, request.metadata);
         nextTokenID := nextTokenID + 1;
         return tID;
     };
 
     public query func getBalance(request : BalanceRequest) : async (Balance){
-        if (ExtCore.TokenIdentifier.isPrincipal(request.token, Principal.fromActor(this)) == false) {
+        var principal : Text = "i76lx-xkhlv-bmgqh-iyixq-ganj6-efqfo-kcuup-63yfg-vsamw-bxzh4-sae";
+        if (Ext.TokenIdentifier.isPrincipal(request.token, Principal.fromText(principal)) == false) {
 			return 0;
 		};
 
@@ -80,6 +81,10 @@ actor KCMT_token = this{
 
     public query func totalToken() : async (Nat){
         return Trie.size(containerToken);
+    };
+
+    public query func cycleBalance() : async Nat{
+        return Cycles.balance();
     };
 
 
