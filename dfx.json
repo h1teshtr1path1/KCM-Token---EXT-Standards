@@ -1,6 +1,10 @@
 {
   "canisters": {
-    "kcmt": {
+    "nftWallet": {
+      "main": "src/main.mo",
+      "type": "motoko"
+    },
+    "nftWallet2":{
       "main": "src/main.mo",
       "type": "motoko"
     }

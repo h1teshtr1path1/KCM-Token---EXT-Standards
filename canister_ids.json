@@ -1,5 +1,8 @@
 {
-    "kcmt": {
+    "nftWallet": {
         "ic": "vypzw-jqaaa-aaaak-aaqsa-cai"
+    },
+    "nftWallet2":{
+        "ic": "vnii3-iyaaa-aaaak-aaqrq-cai"
     }
 }
